@@ -1,0 +1,107 @@
+<script setup lang="ts">
+import { Head, Link, useForm, usePage } from '@inertiajs/vue3'
+import { Icon } from '@iconify/vue'
+import { cn } from '@/lib/utils'
+import App from '@/layouts/app.vue'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+
+const page = usePage()
+
+const form = useForm({
+  email: '',
+  password: '',
+  remember: true,
+})
+
+function submit() {
+  form.post('/login')
+}
+</script>
+
+<template>
+  <Head title="Login" />
+
+  <App>
+    <div
+      class="min-h-screen bg-background flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
+    >
+      <div class="max-w-md w-full">
+        <div :class="cn('flex flex-col gap-6')">
+          <Card>
+            <CardHeader class="text-center">
+              <CardTitle class="text-xl">Welcome back</CardTitle>
+              <CardDescription>Login to your account</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form @submit.prevent="submit">
+                <div class="grid gap-6">
+                  <div class="flex flex-col gap-4">
+                    <Button variant="outline" class="w-full" type="button">
+                      <Icon icon="akar-icons:google-fill" class="size-5" />
+                      Login with Google
+                    </Button>
+                  </div>
+                  <div
+                    class="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t"
+                  >
+                    <span class="bg-card text-muted-foreground relative z-10 px-2">
+                      Or continue with
+                    </span>
+                  </div>
+                  <div class="grid gap-6">
+                    <div class="grid gap-3">
+                      <Label for="email">Email</Label>
+                      <Input
+                        id="email"
+                        v-model="form.email"
+                        type="email"
+                        placeholder="john@smith.com"
+                        required
+                      />
+                      <div
+                        v-if="page.props.errors?.E_INVALID_CREDENTIALS"
+                        class="text-destructive text-sm"
+                      >
+                        {{ page.props.errors.E_INVALID_CREDENTIALS }}
+                      </div>
+                    </div>
+                    <div class="grid gap-3">
+                      <div class="flex items-center">
+                        <Label for="password">Password</Label>
+                        <a href="#" class="ml-auto text-sm underline-offset-4 hover:underline">
+                          Forgot your password?
+                        </a>
+                      </div>
+                      <Input id="password" v-model="form.password" type="password" required />
+                    </div>
+                    <Button type="submit" class="w-full" :disabled="form.processing">
+                      {{ form.processing ? 'Signing in...' : 'Login' }}
+                    </Button>
+                  </div>
+                  <div class="text-center text-sm">
+                    Don't have an account?
+                    <Link
+                      href="/register"
+                      class="underline underline-offset-4 hover:text-primary transition"
+                    >
+                      Sign up
+                    </Link>
+                  </div>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+          <div class="text-muted-foreground text-center text-xs text-balance">
+            By clicking continue, you agree to our
+            <a href="#" class="underline underline-offset-4 hover:text-primary">Terms of Service</a>
+            and
+            <a href="#" class="underline underline-offset-4 hover:text-primary">Privacy Policy</a>.
+          </div>
+        </div>
+      </div>
+    </div>
+  </App>
+</template>
