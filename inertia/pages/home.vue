@@ -40,10 +40,7 @@ const isAuthenticated = computed(() => props.auth.user !== null)
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
               <template v-if="!isAuthenticated">
                 <Link href="/register">
-                  <Button size="lg" class="w-full sm:w-auto"> Create an Account </Button>
-                </Link>
-                <Link href="/login">
-                  <Button variant="outline" size="lg" class="w-full sm:w-auto"> Sign In </Button>
+                  <Button size="lg" class="w-full sm:w-auto">Try Creating an Account</Button>
                 </Link>
               </template>
               <template v-else>
